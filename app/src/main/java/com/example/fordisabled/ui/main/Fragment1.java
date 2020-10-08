@@ -41,16 +41,16 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_map);
-        FloatingActionButton fab = findViewById(R.id.fab);
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab =
+//
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
 
@@ -69,6 +69,9 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback{
         //상위 액티비티의 자원을 사용하기 위해서 Activity를 가져온다
         MainActivity activity = (MainActivity) getActivity();
         manager = activity.getLocationManager();
+
+
+
         return view;
     }
     @Override
@@ -99,7 +102,16 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback{
                     != PackageManager.PERMISSION_GRANTED){
                 return;
             }
+            if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.INTERNET)
+                    != PackageManager.PERMISSION_GRANTED){
+                return;
+            }
+            if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.RECORD_AUDIO)
+                    != PackageManager.PERMISSION_GRANTED){
+                return;
+            }
         }
+
         // GPS 리스너 등록
         manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, //위치제공자
                 3000, //변경사항 체크 주기 millisecond 단위임
@@ -113,15 +125,6 @@ public class Fragment1 extends Fragment implements OnMapReadyCallback{
     public void onPause() {
         super.onPause();
 
-
-        //마시멜로 이상버전에서는 런타임 권한 체크여부를 확인해야 한다
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M){
-            // GPS 사용을 위한 권한 휙득이 되어 있지 않으면 리스너를 해제하지 않는다
-            if(ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION)
-                    != PackageManager.PERMISSION_GRANTED){
-                return;
-            }
-        }
 
         // 리스너 해제 , 프래그먼트 작동 해제
         manager.removeUpdates(locationListener);
