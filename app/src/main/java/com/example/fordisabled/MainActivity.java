@@ -124,8 +124,14 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                funcVoiceOut("목적지를 말씀해 주십시오.");
-                speechStart();
+                try{
+                    funcVoiceOut("목적지를 말씀해 주십시오.");
+                    Thread.sleep(2000);// tts 다 들을 때까지 기다리기 안그럼 stt에 입력으로 들어감
+                    speechStart();
+                }catch (InterruptedException ie){
+                    System.out.println(ie.getStackTrace());
+                }
+
             }
         });
 
@@ -233,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements TextToSpeech.OnIn
                 //음성 인식 결과가 아무 것도 없을 때
                 if(resultStr.trim().length()==0) return;
                 else if(resultStr.trim().length()!=0){
-                    funcVoiceOut(resultStr+" 로 경로 검색을 하겠습니다.");
+                    funcVoiceOut(resultStr+" 로 경로 검색을 시작하겠습니다.");
                     Thread.sleep(2000); // 음성 다들을 때까지 기다리기
                     //경로 탐색 기능
                 }
